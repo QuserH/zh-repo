@@ -116,8 +116,8 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $itDir = "src/InventoryTools/InventoryTools/bin/Release"
-          $arcDir = "src/ARC/ARControl/dist"    # ARC 配置了 OutputPath=dist
-          $deliDir = "src/Deliveroo/dist"    # Deliveroo 配置了 OutputPath=dist
+          $arcDir = "src/ARC/ARControl/dist"          # ARC: OutputPath=dist，相对 ARControl/
+          $deliDir = "src/Deliveroo/Deliveroo/dist"    # Deliveroo: OutputPath=dist，相对 Deliveroo/
 
           # 确保打包目录存在
           if (-not (Test-Path $itDir)) { throw "Missing $itDir" }
