@@ -56,7 +56,15 @@ jobs:
           repository: QuserH/Deliveroo
           ref: zh-cn-translation
           path: src/Deliveroo
-          submodules: recursive
+          # 不递归拉子模块！LLib 源 git.carvel.li 在 Actions 解析不了，改用现成 LLib.dll
+
+      # 提供现成的 LLib.dll（从 zh-repo/libs 复制），csproj 里 LLib.csproj 不存在时自动走 LLibBinaryPath
+      - name: Provide LLib binary for Deliveroo
+        shell: pwsh
+        run: |
+          Copy-Item -Path "zh-repo/libs/LLib.dll" -Destination "src/Deliveroo/LLib.dll" -Force
+          $env:LLibBinaryPath = (Resolve-Path "src/Deliveroo/LLib.dll")
+          echo "LLibBinaryPath=$env:LLibBinaryPath" >> $env:GITHUB_ENV
 
       - name: Setup Dalamud (release branch)
         uses: Blooym/setup-dalamud@v1
@@ -96,7 +104,11 @@ jobs:
         shell: pwsh
         working-directory: src/Deliveroo
         run: |
-          dotnet build Deliveroo/Deliveroo.csproj -c Release --nologo -v q
+          $llibPath = $env:LLibBinaryPath
+          if ([string]::IsNullOrEmpty($llibPath)) { throw "LLibBinaryPath not set" }
+          dotnet restore Deliveroo/Deliveroo.csproj --nologo -v q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet build Deliveroo/Deliveroo.csproj -c Release --nologo -v q /p:LLibBinaryPath="$llibPath"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Package ZIPs
@@ -114,7 +126,13 @@ jobs:
 
           Compress-Archive -Path (Join-Path $itDir '*') -DestinationPath "InventoryTools-1.15.0.9-zh.zip" -Force
           Compress-Archive -Path (Join-Path $arcDir '*') -DestinationPath "ARC-8.5-zh.zip" -Force
-          Compress-Archive -Path (Join-Path $deliDir '*') -DestinationPath "Deliveroo-7.5.0.2-zh.zip" -Force
+
+          # Deliveroo：dist 里可能不含 LLib.dll（走引用不是构建），需手动补进去
+          $tmp = Join-Path $env:RUNNER_TEMP "deli"
+          New-Item -ItemType Directory -Path $tmp -Force | Out-Null
+          Copy-Item -Path (Join-Path $deliDir '*') -Destination $tmp -Force
+          Copy-Item -Path "zh-repo/libs/LLib.dll" -Destination (Join-Path $tmp 'LLib.dll') -Force
+          Compress-Archive -Path (Join-Path $tmp '*') -DestinationPath "Deliveroo-7.5.0.2-zh.zip" -Force
 
           # 更新 pluginmaster.json 的 LastUpdate 时间戳
           $now = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
