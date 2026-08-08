@@ -56,6 +56,7 @@ jobs:
           repository: QuserH/Deliveroo
           ref: zh-cn-translation
           path: src/Deliveroo
+          submodules: recursive
 
       - name: Setup Dalamud (release branch)
         uses: Blooym/setup-dalamud@v1
