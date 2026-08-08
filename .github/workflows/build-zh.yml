@@ -70,6 +70,11 @@ jobs:
         shell: pwsh
         working-directory: src/InventoryTools
         run: |
+          # 先构建 OtterGui 解决方案（含 OtterGuiInternal 子项目），再构建主项目
+          dotnet restore OtterGui/OtterGui.sln --nologo -v q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet build OtterGui/OtterGui.sln -c Release --nologo -v q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           dotnet build InventoryTools/InventoryTools.csproj -c Release --nologo -v q
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
