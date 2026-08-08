@@ -40,6 +40,7 @@ jobs:
           repository: QuserH/OtterGui
           ref: zh-cn-translation
           path: src/InventoryTools/OtterGui
+          submodules: recursive
 
       - name: Checkout ARC (zh-cn-translation)
         uses: actions/checkout@v4
