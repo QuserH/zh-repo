@@ -83,10 +83,12 @@ jobs:
         shell: pwsh
         working-directory: src/ARC
         run: |
-          # 先显式 restore 子模块项目（AutoRetainerAPI 的 Lumina/Newtonsoft/Dalamud 依赖）
+          # DalamudLibPath 强制指到 setup-dalamud 装的位置，否则 AutoRetainerAPI 找不到 Lumina/Dalamud 等
+          $dalamudHome = $env:DALAMUD_HOME
+          if ([string]::IsNullOrEmpty($dalamudHome)) { throw "DALAMUD_HOME not set" }
           dotnet restore ARControl.sln --nologo -v q
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          dotnet build ARControl.sln -c Release --nologo -v q
+          dotnet build ARControl.sln -c Release --nologo -v q /p:DalamudLibPath="$dalamudHome\"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Build Deliveroo
