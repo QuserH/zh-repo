@@ -33,6 +33,7 @@ jobs:
           repository: QuserH/ARC
           ref: zh-cn-translation
           path: src/ARC
+          submodules: recursive
 
       - name: Checkout Deliveroo (zh-cn-translation)
         uses: actions/checkout@v4
