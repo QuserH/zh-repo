@@ -25,7 +25,21 @@ jobs:
           repository: QuserH/InventoryTools
           ref: zh-cn-translation
           path: src/InventoryTools
-          submodules: recursive
+
+      # 显式拉取汉化版子模块（不依赖 .gitmodules 里的上游 URL）
+      - name: Checkout CriticalCommonLib (zh-cn-translation)
+        uses: actions/checkout@v4
+        with:
+          repository: QuserH/CriticalCommonLib
+          ref: zh-cn-translation
+          path: src/InventoryTools/CriticalCommonLib
+
+      - name: Checkout OtterGui (zh-cn-translation)
+        uses: actions/checkout@v4
+        with:
+          repository: QuserH/OtterGui
+          ref: zh-cn-translation
+          path: src/InventoryTools/OtterGui
 
       - name: Checkout ARC (zh-cn-translation)
         uses: actions/checkout@v4
@@ -63,7 +77,10 @@ jobs:
         shell: pwsh
         working-directory: src/ARC
         run: |
-          dotnet build ARControl/ARControl.csproj -c Release --nologo -v q
+          # 先显式 restore 子模块项目（AutoRetainerAPI 的 Lumina/Newtonsoft/Dalamud 依赖）
+          dotnet restore ARControl.sln --nologo -v q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet build ARControl.sln -c Release --nologo -v q
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Build Deliveroo
