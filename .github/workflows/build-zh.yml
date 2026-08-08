@@ -2,6 +2,8 @@ name: build-zh
 
 on:
   workflow_dispatch:            # 手动触发（Actions 页面点 Run workflow）
+  repository_dispatch:          # 跨仓库联动：汉化分支 push 时由对方仓库触发
+    types: [rebuild-zh]
   push:
     branches: [ main ]
     paths: [ 'pluginmaster.json', '.github/workflows/build-zh.yml' ]
@@ -39,18 +41,15 @@ jobs:
           ref: zh-cn-translation
           path: src/Deliveroo
 
-      - name: Setup .NET
+      - name: Setup Dalamud (release branch)
+        uses: Blooym/setup-dalamud@v1
+        with:
+          branch: release
+
+      - name: Setup .NET 10
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
-
-      - name: Setup Dalamud dev environment
-        shell: pwsh
-        run: |
-          # 下载卫月 dev 版最新 zip，解压到本地作为 DALAMUD_HOME
-          Invoke-WebRequest -Uri "https://goatcorp.github.io/dalamud-dev/latest.zip" -OutFile "$env:RUNNER_TEMP/dalamud.zip"
-          Expand-Archive -Path "$env:RUNNER_TEMP/dalamud.zip" -DestinationPath "$env:RUNNER_TEMP/dalamud"
-          echo "DALAMUD_HOME=$env:RUNNER_TEMP/dalamud" >> $env:GITHUB_ENV
 
       - name: Build InventoryTools
         shell: pwsh
@@ -77,12 +76,15 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          # InventoryTools 产物目录
           $itDir = "src/InventoryTools/InventoryTools/bin/Release"
           $arcDir = "src/ARC/ARControl/bin/Release"
-          $deliDir = "src/Deliveroo/dist"    # Deliveroo csproj 配置了 OutputPath=dist
+          $deliDir = "src/Deliveroo/dist"    # Deliveroo 配置了 OutputPath=dist
 
-          # 逐个打包
+          # 确保打包目录存在
+          if (-not (Test-Path $itDir)) { throw "Missing $itDir" }
+          if (-not (Test-Path $arcDir)) { throw "Missing $arcDir" }
+          if (-not (Test-Path $deliDir)) { throw "Missing $deliDir" }
+
           Compress-Archive -Path (Join-Path $itDir '*') -DestinationPath "InventoryTools-1.15.0.9-zh.zip" -Force
           Compress-Archive -Path (Join-Path $arcDir '*') -DestinationPath "ARC-8.5-zh.zip" -Force
           Compress-Archive -Path (Join-Path $deliDir '*') -DestinationPath "Deliveroo-7.5.0.2-zh.zip" -Force
