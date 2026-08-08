@@ -1,0 +1,111 @@
+name: build-zh
+
+on:
+  workflow_dispatch:            # 手动触发（Actions 页面点 Run workflow）
+  push:
+    branches: [ main ]
+    paths: [ 'pluginmaster.json', '.github/workflows/build-zh.yml' ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write          # 允许把产物推回本仓库
+    steps:
+      - name: Checkout zh-repo
+        uses: actions/checkout@v4
+        with:
+          path: zh-repo
+
+      - name: Checkout InventoryTools (zh-cn-translation)
+        uses: actions/checkout@v4
+        with:
+          repository: QuserH/InventoryTools
+          ref: zh-cn-translation
+          path: src/InventoryTools
+          submodules: recursive
+
+      - name: Checkout ARC (zh-cn-translation)
+        uses: actions/checkout@v4
+        with:
+          repository: QuserH/ARC
+          ref: zh-cn-translation
+          path: src/ARC
+
+      - name: Checkout Deliveroo (zh-cn-translation)
+        uses: actions/checkout@v4
+        with:
+          repository: QuserH/Deliveroo
+          ref: zh-cn-translation
+          path: src/Deliveroo
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Setup Dalamud dev environment
+        shell: pwsh
+        run: |
+          # 下载卫月 dev 版最新 zip，解压到本地作为 DALAMUD_HOME
+          Invoke-WebRequest -Uri "https://goatcorp.github.io/dalamud-dev/latest.zip" -OutFile "$env:RUNNER_TEMP/dalamud.zip"
+          Expand-Archive -Path "$env:RUNNER_TEMP/dalamud.zip" -DestinationPath "$env:RUNNER_TEMP/dalamud"
+          echo "DALAMUD_HOME=$env:RUNNER_TEMP/dalamud" >> $env:GITHUB_ENV
+
+      - name: Build InventoryTools
+        shell: pwsh
+        working-directory: src/InventoryTools
+        run: |
+          dotnet build InventoryTools/InventoryTools.csproj -c Release --nologo -v q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build ARC
+        shell: pwsh
+        working-directory: src/ARC
+        run: |
+          dotnet build ARControl/ARControl.csproj -c Release --nologo -v q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build Deliveroo
+        shell: pwsh
+        working-directory: src/Deliveroo
+        run: |
+          dotnet build Deliveroo/Deliveroo.csproj -c Release --nologo -v q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Package ZIPs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          # InventoryTools 产物目录
+          $itDir = "src/InventoryTools/InventoryTools/bin/Release"
+          $arcDir = "src/ARC/ARControl/bin/Release"
+          $deliDir = "src/Deliveroo/dist"    # Deliveroo csproj 配置了 OutputPath=dist
+
+          # 逐个打包
+          Compress-Archive -Path (Join-Path $itDir '*') -DestinationPath "InventoryTools-1.15.0.9-zh.zip" -Force
+          Compress-Archive -Path (Join-Path $arcDir '*') -DestinationPath "ARC-8.5-zh.zip" -Force
+          Compress-Archive -Path (Join-Path $deliDir '*') -DestinationPath "Deliveroo-7.5.0.2-zh.zip" -Force
+
+          # 更新 pluginmaster.json 的 LastUpdate 时间戳
+          $now = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+          $json = Get-Content "zh-repo/pluginmaster.json" -Raw | ConvertFrom-Json
+          foreach ($p in $json) { $p.LastUpdate = $now }
+          $json | ConvertTo-Json -Depth 5 | Set-Content "zh-repo/pluginmaster.json" -Encoding UTF8
+
+      - name: Copy ZIPs into zh-repo
+        shell: pwsh
+        run: |
+          Copy-Item -Path "ARC-8.5-zh.zip" -Destination "zh-repo/ARC-8.5-zh.zip" -Force
+          Copy-Item -Path "Deliveroo-7.5.0.2-zh.zip" -Destination "zh-repo/Deliveroo-7.5.0.2-zh.zip" -Force
+          Copy-Item -Path "InventoryTools-1.15.0.9-zh.zip" -Destination "zh-repo/InventoryTools-1.15.0.9-zh.zip" -Force
+
+      - name: Commit and push
+        shell: pwsh
+        working-directory: zh-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "auto: rebuild zh-CN packages [skip ci]" || echo "nothing to commit"
+          git push
