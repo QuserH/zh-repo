@@ -124,28 +124,48 @@ jobs:
           if (-not (Test-Path $arcDir)) { throw "Missing $arcDir" }
           if (-not (Test-Path $deliDir)) { throw "Missing $deliDir" }
 
-          Compress-Archive -Path (Join-Path $itDir '*') -DestinationPath "InventoryTools-1.15.0.9-zh.zip" -Force
-          Compress-Archive -Path (Join-Path $arcDir '*') -DestinationPath "ARC-8.5-zh.zip" -Force
+          # 从构建产物 manifest 自动读取 InventoryTools 版本号
+          $itManifest = Get-Content (Join-Path $itDir 'InventoryTools.json') -Raw | ConvertFrom-Json
+          $itVersion = $itManifest.AssemblyVersion
+          Write-Host "InventoryTools version: $itVersion"
+          $itZipName = "InventoryTools-$itVersion-zh.zip"
+          $arcZipName = "ARC-8.5-zh.zip"
+          $deliZipName = "Deliveroo-7.5.0.2-zh.zip"
+
+          Compress-Archive -Path (Join-Path $itDir '*') -DestinationPath $itZipName -Force
+          Compress-Archive -Path (Join-Path $arcDir '*') -DestinationPath $arcZipName -Force
 
           # Deliveroo：dist 里可能不含 LLib.dll（走引用不是构建），需手动补进去
           $tmp = Join-Path $env:RUNNER_TEMP "deli"
           New-Item -ItemType Directory -Path $tmp -Force | Out-Null
           Copy-Item -Path (Join-Path $deliDir '*') -Destination $tmp -Force
           Copy-Item -Path "zh-repo/libs/LLib.dll" -Destination (Join-Path $tmp 'LLib.dll') -Force
-          Compress-Archive -Path (Join-Path $tmp '*') -DestinationPath "Deliveroo-7.5.0.2-zh.zip" -Force
+          Compress-Archive -Path (Join-Path $tmp '*') -DestinationPath $deliZipName -Force
 
-          # 更新 pluginmaster.json 的 LastUpdate 时间戳
+          # 更新 pluginmaster.json：LastUpdate + InventoryTools 版本号和下载链接
           $now = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
           $json = Get-Content "zh-repo/pluginmaster.json" -Raw | ConvertFrom-Json
-          foreach ($p in $json) { $p.LastUpdate = $now }
+          foreach ($p in $json) {
+            $p.LastUpdate = $now
+            if ($p.InternalName -eq 'InventoryTools') {
+              $p.AssemblyVersion = $itVersion
+              $p.DownloadLinkInstall = "https://raw.githubusercontent.com/QuserH/zh-repo/main/$itZipName"
+              $p.DownloadLinkUpdate = "https://raw.githubusercontent.com/QuserH/zh-repo/main/$itZipName"
+            }
+          }
           $json | ConvertTo-Json -Depth 5 | Set-Content "zh-repo/pluginmaster.json" -Encoding UTF8
+
+          # 把文件名输出给后续步骤
+          "IT_ZIP=$itZipName" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "ARC_ZIP=$arcZipName" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "DELI_ZIP=$deliZipName" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Copy ZIPs into zh-repo
         shell: pwsh
         run: |
-          Copy-Item -Path "ARC-8.5-zh.zip" -Destination "zh-repo/ARC-8.5-zh.zip" -Force
-          Copy-Item -Path "Deliveroo-7.5.0.2-zh.zip" -Destination "zh-repo/Deliveroo-7.5.0.2-zh.zip" -Force
-          Copy-Item -Path "InventoryTools-1.15.0.9-zh.zip" -Destination "zh-repo/InventoryTools-1.15.0.9-zh.zip" -Force
+          Copy-Item -Path $env:ARC_ZIP -Destination "zh-repo/$env:ARC_ZIP" -Force
+          Copy-Item -Path $env:DELI_ZIP -Destination "zh-repo/$env:DELI_ZIP" -Force
+          Copy-Item -Path $env:IT_ZIP -Destination "zh-repo/$env:IT_ZIP" -Force
 
       - name: Commit and push
         shell: pwsh
