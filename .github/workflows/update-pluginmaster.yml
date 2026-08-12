@@ -1,0 +1,55 @@
+name: update-pluginmaster
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [publish-plugin]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update published plugin metadata
+        env:
+          INTERNAL_NAME: ${{ github.event.client_payload.internal_name }}
+          VERSION: ${{ github.event.client_payload.version }}
+          DOWNLOAD_URL: ${{ github.event.client_payload.download_url }}
+          REPO_URL: ${{ github.event.client_payload.repo_url }}
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrWhiteSpace($env:INTERNAL_NAME) -or
+              [string]::IsNullOrWhiteSpace($env:VERSION) -or
+              [string]::IsNullOrWhiteSpace($env:DOWNLOAD_URL)) {
+            throw 'Missing internal_name, version, or download_url in publish-plugin payload.'
+          }
+
+          $plugins = Get-Content pluginmaster.json -Raw | ConvertFrom-Json
+          $plugin = @($plugins | Where-Object InternalName -eq $env:INTERNAL_NAME)
+          if ($plugin.Count -ne 1) {
+            throw "Expected exactly one plugin named '$env:INTERNAL_NAME', found $($plugin.Count)."
+          }
+
+          $plugin = $plugin[0]
+          $plugin.AssemblyVersion = $env:VERSION
+          $plugin.DownloadLinkInstall = $env:DOWNLOAD_URL
+          $plugin.DownloadLinkUpdate = $env:DOWNLOAD_URL
+          $plugin.LastUpdate = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+          if (-not [string]::IsNullOrWhiteSpace($env:REPO_URL)) {
+            $plugin.RepoUrl = $env:REPO_URL
+          }
+
+          $plugins | ConvertTo-Json -Depth 10 | Set-Content pluginmaster.json -Encoding utf8
+
+      - name: Commit pluginmaster update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pluginmaster.json
+          git diff --cached --quiet && exit 0
+          git commit -m "auto: publish ${{ github.event.client_payload.internal_name }} ${{ github.event.client_payload.version }} [skip ci]"
+          git push
