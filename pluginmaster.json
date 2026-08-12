@@ -41,17 +41,17 @@
     "Punchline": "轻松整理《最终幻想XIV》物品：快速定位、规划归置与制作，并可搜索怪物、副本、飞空艇和潜水艇！",
     "Description": "亚拉戈工具箱主要用于追踪各角色、雇员与部队仓库中的物品。借助强大的筛选系统，你可随时找到物品并了解应整理到哪里。",
     "InternalName": "InventoryTools",
-    "AssemblyVersion": "1.15.0.11",
+    "AssemblyVersion": "1.15.0.12",
     "TestingAssemblyVersion": null,
     "RepoUrl": "https://github.com/QuserH/InventoryTools",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 15,
     "IsHide": false,
     "IsTestingExclusive": false,
-    "DownloadLinkInstall": "https://github.com/QuserH/InventoryTools/releases/download/zh-v1.15.0.11/InventoryTools-1.15.0.11-zh.zip",
+    "DownloadLinkInstall": "https://github.com/QuserH/InventoryTools/releases/download/zh-v1.15.0.12/InventoryTools-1.15.0.12-zh.zip",
     "DownloadLinkTesting": null,
-    "DownloadLinkUpdate": "https://github.com/QuserH/InventoryTools/releases/download/zh-v1.15.0.11/InventoryTools-1.15.0.11-zh.zip",
-    "LastUpdate": 1786510326
+    "DownloadLinkUpdate": "https://github.com/QuserH/InventoryTools/releases/download/zh-v1.15.0.12/InventoryTools-1.15.0.12-zh.zip",
+    "LastUpdate": 1786511469
   },
   {
     "Author": "NightmareXIV, kawaii",
