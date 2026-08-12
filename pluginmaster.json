@@ -7,15 +7,15 @@
     "InternalName": "ARControl",
     "AssemblyVersion": "8.5",
     "TestingAssemblyVersion": null,
-    "RepoUrl": "https://github.com/zbee/ARC",
+    "RepoUrl": "https://github.com/QuserH/ARC",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 15,
     "IsHide": false,
     "IsTestingExclusive": false,
-    "DownloadLinkInstall": "https://raw.githubusercontent.com/QuserH/zh-repo/main/ARC-8.5-zh.zip",
+    "DownloadLinkInstall": "https://github.com/QuserH/ARC/releases/download/zh-v8.5/ARControl-8.5-zh.zip",
     "DownloadLinkTesting": null,
-    "DownloadLinkUpdate": "https://raw.githubusercontent.com/QuserH/zh-repo/main/ARC-8.5-zh.zip",
-    "LastUpdate": 1786508744
+    "DownloadLinkUpdate": "https://github.com/QuserH/ARC/releases/download/zh-v8.5/ARControl-8.5-zh.zip",
+    "LastUpdate": 1786510300
   },
   {
     "Author": "Liza Carvelli",
