@@ -59,16 +59,16 @@
     "Punchline": "躺在床上就能收取并指派你的雇员冒险委托。",
     "Description": "躺在床上就能收取并指派你的雇员冒险委托。\n\n主要功能：\n\t- 一键指派/重新指派雇员冒险委托，自动处理繁琐的确认弹窗\n\t- 一键部署远征探险（飞空艇/潜水艇）\n\t- 创建出售列表，自动清理垃圾物品\n\t- 创建存放列表，将贵重物品存入雇员以节省背包空间",
     "InternalName": "AutoRetainer",
-    "AssemblyVersion": "4.6.1.28",
+    "AssemblyVersion": "4.6.1.26",
     "TestingAssemblyVersion": null,
     "RepoUrl": "https://github.com/QuserH/AutoRetainer",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 15,
     "IsHide": false,
     "IsTestingExclusive": false,
-    "DownloadLinkInstall": "https://github.com/QuserH/AutoRetainer/releases/download/v4.6.1.28/AutoRetainer.zip",
+    "DownloadLinkInstall": "https://github.com/QuserH/AutoRetainer/releases/download/v4.6.1.26/AutoRetainer.zip",
     "DownloadLinkTesting": null,
-    "DownloadLinkUpdate": "https://github.com/QuserH/AutoRetainer/releases/download/v4.6.1.28/AutoRetainer.zip",
-    "LastUpdate": 1786514406
+    "DownloadLinkUpdate": "https://github.com/QuserH/AutoRetainer/releases/download/v4.6.1.26/AutoRetainer.zip",
+    "LastUpdate": 1786606021
   }
 ]
