@@ -70,5 +70,23 @@
     "DownloadLinkTesting": null,
     "DownloadLinkUpdate": "https://github.com/QuserH/AutoRetainer/releases/download/v4.6.1.26/AutoRetainer.zip",
     "LastUpdate": 1786608301
+  },
+  {
+    "Author": "Anna / QuserH",
+    "Name": "XIVChat 中文修复版",
+    "Punchline": "在其他设备上使用游戏聊天。",
+    "Description": "XIVChat 游戏内服务器组件，支持中文界面，并修复 Dalamud API 15 下好友列表无法传递的问题。",
+    "InternalName": "XIVChat",
+    "AssemblyVersion": "1.7.14",
+    "TestingAssemblyVersion": null,
+    "RepoUrl": "https://github.com/QuserH/Xivchat",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 15,
+    "IsHide": false,
+    "IsTestingExclusive": false,
+    "DownloadLinkInstall": "https://github.com/QuserH/Xivchat/releases/download/v1.7.14-zh1/latest.zip",
+    "DownloadLinkTesting": null,
+    "DownloadLinkUpdate": "https://github.com/QuserH/Xivchat/releases/download/v1.7.14-zh1/latest.zip",
+    "LastUpdate": 1787049722
   }
 ]
