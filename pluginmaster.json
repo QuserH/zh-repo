@@ -88,5 +88,23 @@
     "DownloadLinkTesting": null,
     "DownloadLinkUpdate": "https://github.com/QuserH/Xivchat/releases/download/v1.7.13-zh2/latest.zip",
     "LastUpdate": 1787056210
+  },
+  {
+    "Author": "Anna / QuserH",
+    "Name": "艾欧泽亚终端",
+    "Punchline": "从手机访问游戏聊天与角色数据。",
+    "Description": "XIVChat 的独立手机终端配套插件，提供中文聊天、好友列表、角色资料和实时背包数据。与原 XIVChat 插件分开安装，使用相同的加密端口。",
+    "InternalName": "EorzeaPhone",
+    "AssemblyVersion": "0.1.0",
+    "TestingAssemblyVersion": null,
+    "RepoUrl": "https://github.com/QuserH/Xivchat",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 15,
+    "IsHide": false,
+    "IsTestingExclusive": false,
+    "DownloadLinkInstall": "https://github.com/QuserH/Xivchat/releases/download/v0.1.1-eorzeaphone/EorzeaPhone-0.1.0-plugin.zip",
+    "DownloadLinkTesting": null,
+    "DownloadLinkUpdate": "https://github.com/QuserH/Xivchat/releases/download/v0.1.1-eorzeaphone/EorzeaPhone-0.1.0-plugin.zip",
+    "LastUpdate": 1787067333
   }
 ]
