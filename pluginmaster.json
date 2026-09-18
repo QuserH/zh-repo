@@ -59,16 +59,16 @@
     "Punchline": "从手机访问游戏聊天、角色与本地游戏数据。",
     "Description": "连接亚拉戈终端 App，在手机上查看游戏聊天、角色资料、好友、背包与潜水艇等信息，并可直接加入招募。手机重新连接时自动补齐离线期间收到的消息。",
     "InternalName": "EorzeaPhone",
-    "AssemblyVersion": "0.7.108",
+    "AssemblyVersion": "0.7.117",
     "TestingAssemblyVersion": null,
     "RepoUrl": "https://github.com/QuserH/Xivchat",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 15,
     "IsHide": false,
     "IsTestingExclusive": false,
-    "DownloadLinkInstall": "https://raw.githubusercontent.com/QuserH/zh-repo/main/EorzeaPhone-0.7.108.zip",
+    "DownloadLinkInstall": "https://raw.githubusercontent.com/QuserH/zh-repo/main/EorzeaPhone-0.7.117.zip",
     "DownloadLinkTesting": null,
-    "DownloadLinkUpdate": "https://raw.githubusercontent.com/QuserH/zh-repo/main/EorzeaPhone-0.7.108.zip",
-    "LastUpdate": 1789560251
+    "DownloadLinkUpdate": "https://raw.githubusercontent.com/QuserH/zh-repo/main/EorzeaPhone-0.7.117.zip",
+    "LastUpdate": 1789703360
   }
 ]
