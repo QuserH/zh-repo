@@ -18,24 +18,6 @@
     "LastUpdate": 1786510300
   },
   {
-    "Author": "Critical_Impact",
-    "Name": "亚拉戈工具箱",
-    "Punchline": "轻松整理《最终幻想XIV》物品：快速定位、规划归置与制作，并可搜索怪物、副本、飞空艇和潜水艇！",
-    "Description": "亚拉戈工具箱主要用于追踪各角色、雇员与部队仓库中的物品。借助强大的筛选系统，你可随时找到物品并了解应整理到哪里。",
-    "InternalName": "InventoryTools",
-    "AssemblyVersion": "1.15.0.18",
-    "TestingAssemblyVersion": null,
-    "RepoUrl": "https://github.com/QuserH/InventoryTools",
-    "ApplicableVersion": "any",
-    "DalamudApiLevel": 15,
-    "IsHide": false,
-    "IsTestingExclusive": false,
-    "DownloadLinkInstall": "https://github.com/QuserH/InventoryTools/releases/download/zh-v1.15.0.18/InventoryTools-1.15.0.18-zh.zip",
-    "DownloadLinkTesting": null,
-    "DownloadLinkUpdate": "https://github.com/QuserH/InventoryTools/releases/download/zh-v1.15.0.18/InventoryTools-1.15.0.18-zh.zip",
-    "LastUpdate": 1793101492
-  },
-  {
     "Author": "NightmareXIV, kawaii",
     "Name": "AutoRetainer (自动雇员)",
     "Punchline": "躺在床上就能收取并指派你的雇员冒险委托。",
@@ -89,5 +71,23 @@
     "DownloadLinkTesting": null,
     "DownloadLinkUpdate": "https://github.com/QuserH/Artisan/releases/download/v4.0.5.21002/Artisan.zip",
     "LastUpdate": 1793087909
+  },
+  {
+    "Author": "Critical_Impact",
+    "Name": "亚拉戈工具箱",
+    "Punchline": "轻松整理《最终幻想XIV》物品：快速定位、规划归置与制作，并可搜索怪物、副本、飞空艇和潜水艇！",
+    "Description": "亚拉戈工具箱主要用于追踪各角色、雇员与部队仓库中的物品。借助强大的筛选系统，你可随时找到物品并了解应整理到哪里。",
+    "InternalName": "InventoryToolsZh",
+    "AssemblyVersion": "1.15.0.19",
+    "TestingAssemblyVersion": null,
+    "RepoUrl": "https://github.com/QuserH/InventoryTools",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 15,
+    "IsHide": false,
+    "IsTestingExclusive": false,
+    "DownloadLinkInstall": "https://github.com/QuserH/InventoryTools/releases/download/zh-v1.15.0.19/InventoryTools-1.15.0.19-zh.zip",
+    "DownloadLinkTesting": null,
+    "DownloadLinkUpdate": "https://github.com/QuserH/InventoryTools/releases/download/zh-v1.15.0.19/InventoryTools-1.15.0.19-zh.zip",
+    "LastUpdate": 1793102912
   }
 ]
