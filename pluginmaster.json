@@ -71,5 +71,23 @@
     "DownloadLinkUpdate": "https://raw.githubusercontent.com/QuserH/zh-repo/main/EorzeaPhone-1.0.1.zip",
     "LastUpdate": 1792905469,
     "IconUrl": "https://raw.githubusercontent.com/QuserH/zh-repo/main/EorzeaPhone-icon.png"
+  },
+  {
+    "Author": "Taurenkey (Puni.sh), QiongHHHZZZ(汉化&适配), QuserH(功能定制)",
+    "Name": "Artisan",
+    "Punchline": "一个“简单”的制作插件。",
+    "Description": "一体化制作插件。",
+    "InternalName": "Artisan",
+    "AssemblyVersion": "4.0.5.21001",
+    "TestingAssemblyVersion": null,
+    "RepoUrl": "https://github.com/QuserH/Artisan",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 15,
+    "IsHide": false,
+    "IsTestingExclusive": false,
+    "DownloadLinkInstall": "https://github.com/QuserH/Artisan/releases/download/v4.0.5.21001/Artisan.zip",
+    "DownloadLinkTesting": null,
+    "DownloadLinkUpdate": "https://github.com/QuserH/Artisan/releases/download/v4.0.5.21001/Artisan.zip",
+    "LastUpdate": 1793081585
   }
 ]
