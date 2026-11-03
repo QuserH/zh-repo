@@ -1,0 +1,12 @@
+{
+  "modules": [
+    {
+      "id": "sample-items",
+      "name": "物品搜索",
+      "version": "1.0.0",
+      "description": "示例模块：查询本地物品库",
+      "sha256": "c4879364c50ee3234dd0cacfd4d1e529edf9d5642ceb9fd652da9678a0a1659a",
+      "path": "packages/sample-items-1.0.0.zip"
+    }
+  ]
+}
